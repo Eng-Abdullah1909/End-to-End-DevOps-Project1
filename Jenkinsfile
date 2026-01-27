@@ -2,8 +2,10 @@ pipeline {
     agent any
 
     tools {
-        'NodeJS-25.0.0'
+     nodejs 'NodeJS-25.0.0'
     }
+
+
 
     stages {
         stage('Installing Dependencies') {
