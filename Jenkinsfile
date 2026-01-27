@@ -1,15 +1,26 @@
 pipeline {
     agent any
 
-    tools 'NodeJS-25.0.0'
+    tools {
+        'NodeJS-25.0.0'
+    }
 
     stages {
-        stage('VM Node Version') {
+        stage('Installing Dependencies') {
+            steps {
+                sh 'npm install --no-audit'
+            }
+        }
+    }
+
+    stages {
+        stage('Installing Dependencies') {
             steps {
                 sh '''
-                    node -v
-                    npm -v
+                    npm audit --audit-level=critical
+                    echo $?
                 '''
+                
             }
         }
     }
