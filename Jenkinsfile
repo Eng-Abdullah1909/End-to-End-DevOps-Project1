@@ -1,20 +1,15 @@
-pipeline{
+pipeline {
     agent any
-    
-    stages{
-        stage('checking node version'){
-            steps{
-                echo "checking nodejs version"
-                sh 'node -v'
-            }    
-        }
 
-        stage('checking npm version'){
-            steps{
-                echo "checking npm version"
-                sh 'npm -v'
-            }    
-        }
 
+    stages {
+        stage('VM Node Version') {
+            steps {
+                sh '''
+                    node -v
+                    npm -v
+                '''
+            }
+        }
     }
 }
