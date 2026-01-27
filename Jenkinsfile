@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     tools {
-     nodejs 'NodeJS-25.0.0'
+        nodejs 'NodeJS-25.0.0'
     }
 
 
@@ -13,9 +13,8 @@ pipeline {
                 sh 'npm install --no-audit'
             }
         }
-    }
 
-    stages {
+
         stage('Installing Dependencies') {
             steps {
                 sh '''
@@ -25,5 +24,7 @@ pipeline {
                 
             }
         }
+    
     }
+    
 }
