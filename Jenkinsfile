@@ -28,7 +28,7 @@ pipeline {
 
                 stage('NPM Dependency fix') {
                     steps {
-                        sh 'npm audit fix'
+                        sh 'npm audit fix --force'
                             
                     }
                 }
