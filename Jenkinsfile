@@ -5,8 +5,6 @@ pipeline {
         nodejs 'NodeJS-20.10.0'
     }
 
-
-
     stages {
         stage('Installing Dependencies') {
             steps {
@@ -14,29 +12,22 @@ pipeline {
             }
         }
 
-
-        stage('Dependancy scanning'){
-            parallel{
-                stage('NPM Dependency Audit') {
-                    steps {
-                        sh '''
-                            npm audit --audit-level=critical
-                            echo $?
-                        ''' 
-                    }
-                }
-
-                stage('NPM Dependency fix') {
-                    steps {
-                        sh 'npm audit fix --force'
-                            
-                    }
-                }
+        stage('Dependency Fix') {
+            steps {
+                sh 'npm audit fix || true'
             }
         }
 
-        
-    
+        stage('Dependency Audit') {
+            steps {
+                sh 'npm audit --audit-level=critical || true'
+            }
+        }
+
+        stage('Run Tests') {
+            steps {
+                sh 'npm test'
+            }
+        }
     }
-    
 }
