@@ -1,6 +1,9 @@
 pipeline {
     agent any
 
+    options {
+        timeout(time: 1, unit: 'HOURS')
+
     tools {
         nodejs 'NodeJS-20.10.0'
     }
@@ -18,13 +21,13 @@ pipeline {
 
         stage('Dependency Fix') {
             steps {
-                sh 'npm audit fix || true'
+                sh 'npm audit fix'
             }
         }
 
         stage('Dependency Audit') {
             steps {
-                sh 'npm audit --audit-level=critical || true'
+                sh 'npm audit --audit-level=critical'
             }
         }
 
@@ -38,5 +41,18 @@ pipeline {
                 
             }
         }
+        stage('code coverage') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'mongo cred user and pass', passwordVariable: 'MONGO_PASSWORD', usernameVariable: 'MONGO_USERNAME')]) {
+                    catchError(buildResult: 'SUCCESS', message: 'Issue will be fixed next build', stageResult: 'UNSTABLE') {
+                      sh 'npm run coverage'
+                    }
+                }
+
+                 publishHTML([allowMissing: true, alwaysLinkToLastBuild: true, keepAll: true, reportDir: 'coverage/lcov-report', reportFiles: 'index.html', reportName: 'Code Coverage HTML Report', reportTitles: '', useWrapperFileDirectly: true])
+                
+            }
+        }
+
     }
 }
