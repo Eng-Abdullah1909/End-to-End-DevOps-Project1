@@ -35,19 +35,7 @@ pipeline {
         stage('Run Tests') {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'mongo cred user and pass', passwordVariable: 'MONGO_PASSWORD', usernameVariable: 'MONGO_USERNAME')]) {
-                    //sh 'npm test'
-                    sh '''
-                        echo "=== Debug Info ==="
-                        echo "MONGO_USERNAME is set: $([ -n \"$MONGO_USERNAME\" ] && echo YES || echo NO)"
-                        echo "MONGO_PASSWORD length: ${#MONGO_PASSWORD}"
-                        echo "==================="
-                        
-                        npm test || true
-                        
-                        echo "=== Test Exit Code: $? ==="
-                        
-                        ls -la test-results.xml 2>/dev/null || echo "test-results.xml NOT FOUND"
-                    '''
+                    sh 'npm test \\ true'
                 }
 
                 junit allowEmptyResults: true, stdioRetention: '', testResults: 'test-results.xml'
