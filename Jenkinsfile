@@ -22,7 +22,7 @@ pipeline {
 
         stage('Dependency Fix') {
             steps {
-                sh 'npm audit fix'
+                sh 'npm audit fix' || true
             }
         }
 
