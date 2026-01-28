@@ -37,8 +37,6 @@ pipeline {
                 withCredentials([usernamePassword(credentialsId: 'mongo cred user and pass', passwordVariable: 'MONGO_PASSWORD', usernameVariable: 'MONGO_USERNAME')]) {
                     sh 'npm test \\ true'
                 }
-
-                junit allowEmptyResults: true, stdioRetention: '', testResults: 'test-results.xml'
                 
             }
         }
@@ -50,10 +48,18 @@ pipeline {
                     }
                 }
 
-                publishHTML([allowMissing: true, alwaysLinkToLastBuild: true, keepAll: true, reportDir: 'coverage/lcov-report', reportFiles: 'index.html', reportName: 'Code Coverage HTML Report', reportTitles: '', useWrapperFileDirectly: true])
                 
             }
         }
 
     }
+
+    post {
+        always {
+            junit allowEmptyResults: true, stdioRetention: '', testResults: 'test-results.xml'
+            publishHTML([allowMissing: true, alwaysLinkToLastBuild: true, keepAll: true, reportDir: 'coverage/lcov-report', reportFiles: 'index.html', reportName: 'Code Coverage HTML Report', reportTitles: '', useWrapperFileDirectly: true])
+
+        }
+    }
+
 }
