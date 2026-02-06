@@ -56,7 +56,7 @@ pipeline {
 
         stage('SAST - SonarQube') {
             steps {
-                withSonarQubeEnv(credentialsId: 'sonarqube-token') {
+                withSonarQubeEnv(credentialsId: 'sonarqube-scanner') {
                     sh 'echo $Sonar_Scanner_Home'
                     sh '''
                         $Sonar_Scanner_Home/bin/sonar-scanner \
