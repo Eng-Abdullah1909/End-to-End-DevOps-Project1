@@ -11,7 +11,7 @@ pipeline {
 
     environment {
         MONGO_URI = "mongodb+srv://supercluster.d83jj.mongodb.net/superData"
-        Sonar_Scanner_Home = 'sonarqube-scanner-6.1.0';
+        Sonar_Scanner_Home = tool 'sonarqube-scanner-6.1.0'
 
     }
 
