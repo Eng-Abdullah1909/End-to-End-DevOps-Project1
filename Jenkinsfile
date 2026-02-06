@@ -11,7 +11,7 @@ pipeline {
 
     environment {
         MONGO_URI = "mongodb+srv://supercluster.d83jj.mongodb.net/superData"
-        Sonar_scanner_Home = 'sonarqube-scanner-6.1.0';
+        Sonar_Scanner_Home = 'sonarqube-scanner-6.1.0';
 
     }
 
@@ -56,13 +56,14 @@ pipeline {
 
         stage('SAST - SonarQube') {
             steps {
-                sh 'echo $Sonar_scanner_Home '
+                sh 'echo $Sonar_Scanner_Home'
                 sh '''
-                    $Sonar_scanner_Home /bin/sonar-scanner \
+                    $Sonar_Scanner_Home/bin/sonar-scanner \
                         -Dsonar.projectKey=Solar-System-Project \
                         -Dsonar.sources=app.js \
                         -Dsonar.host.url=http://localhost:9000 \
-                        -Dsonar.login=sqp_4e2e975f82b1c44b269e1382616b1b014b174b74
+                        -Dsonar.javascript.lcov.reportPaths=/coverage/lcov.info \
+
                 '''
             }
         }
