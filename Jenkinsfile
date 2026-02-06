@@ -56,14 +56,13 @@ pipeline {
 
         stage('SAST - SonarQube') {
             steps {
-                withSonarQubeEnv(credentialsId: 'sonarqube-scanner') {
+                withSonarQubeEnv('sonarqube-scanner') {
                     sh 'echo $Sonar_Scanner_Home'
                     sh '''
                         $Sonar_Scanner_Home/bin/sonar-scanner \
                             -Dsonar.projectKey=Solar-System-Project \
                             -Dsonar.sources=app.js \
                             -Dsonar.javascript.lcov.reportPaths=/coverage/lcov.info \
-
                     '''
                 }
             }    
