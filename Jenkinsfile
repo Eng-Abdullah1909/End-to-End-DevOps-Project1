@@ -56,16 +56,18 @@ pipeline {
 
         stage('SAST - SonarQube') {
             steps {
-                sh 'echo $Sonar_Scanner_Home'
-                sh '''
-                    $Sonar_Scanner_Home/bin/sonar-scanner \
-                        -Dsonar.projectKey=Solar-System-Project \
-                        -Dsonar.sources=app.js \
-                        -Dsonar.host.url=http://localhost:9000 \
-                        -Dsonar.javascript.lcov.reportPaths=/coverage/lcov.info \
+                withSonarQubeEnv(credentialsId: 'sonarqube-token') {
+                    sh 'echo $Sonar_Scanner_Home'
+                    sh '''
+                        $Sonar_Scanner_Home/bin/sonar-scanner \
+                            -Dsonar.projectKey=Solar-System-Project \
+                            -Dsonar.sources=app.js \
+                            -Dsonar.javascript.lcov.reportPaths=/coverage/lcov.info \
 
-                '''
-            }
+                    '''
+                }
+            }    
+
         }
 
     }
