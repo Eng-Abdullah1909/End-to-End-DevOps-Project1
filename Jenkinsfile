@@ -93,7 +93,7 @@ pipeline {
                     trivy image \
                         --severity HIGH,CRITICAL \
                         --format template \
-                        --template "@/usr/share/trivy/templates/html.tpl" \
+                        --template "@/usr/local/share/trivy/templates/html.tpl" \
                         --output trivy-report.html \
                         engabdullah1909/solar-system:$GIT_COMMIT
                 '''
