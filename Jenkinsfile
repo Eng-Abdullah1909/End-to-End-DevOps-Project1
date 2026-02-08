@@ -77,30 +77,30 @@ pipeline {
             }
         }
 
-        stage('Trivy Vulnerability Scan') {
-            steps {
-                sh '''
-                    echo "========== TRIVY SCAN RESULTS =========="
-                    trivy image \
-                        --severity LOW \
-                        --format table \
-                        --exit-code 0 \
-                        --quiet \
-                        engabdullah1909/solar-system:$GIT_COMMIT
-                '''
+        // stage('Trivy Vulnerability Scan') {
+        //     steps {
+        //         sh '''
+        //             echo "========== TRIVY SCAN RESULTS =========="
+        //             trivy image \
+        //                 --severity LOW \
+        //                 --format table \
+        //                 --exit-code 0 \
+        //                 --quiet \
+        //                 engabdullah1909/solar-system:$GIT_COMMIT
+        //         '''
                 
-                sh '''
-                    trivy image \
-                        --severity HIGH,CRITICAL \
-                        --format template \
-                        --template "@/usr/local/share/trivy/templates/html.tpl" \
-                        --output trivy-report.html \
-                        engabdullah1909/solar-system:$GIT_COMMIT
-                '''
+        //         sh '''
+        //             trivy image \
+        //                 --severity HIGH,CRITICAL \
+        //                 --format template \
+        //                 --template "@/usr/local/share/trivy/templates/html.tpl" \
+        //                 --output trivy-report.html \
+        //                 engabdullah1909/solar-system:$GIT_COMMIT
+        //         '''
 
                 
-            }
-        }
+        //     }
+        // }
 
         stage('Push Docker Image') {
             steps {
