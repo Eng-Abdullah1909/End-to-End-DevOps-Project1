@@ -102,6 +102,14 @@ pipeline {
             }
         }
 
+        stage('Push Docker Image') {
+            steps {
+                withDockerRegistry(credentialsId: 'Docker-Hub-UP', url: "") {
+                    sh 'docker push siddharth67/solar-system:$GIT_COMMIT'
+                }
+            }
+        }
+
     }
 
     post {
