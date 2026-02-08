@@ -77,6 +77,36 @@ pipeline {
             }
         }
 
+        stage('Trivy Vulnerability Scan') {
+            steps {
+                sh '''
+                    echo "========== TRIVY SCAN RESULTS =========="
+                    trivy image \
+                        --severity LOW \
+                        --format table \
+                        --exit-code 0 \
+                        --quiet \
+                        engabdullah1909/solar-system:$GIT_COMMIT
+                '''
+                
+                sh '''
+                    trivy image \
+                        --severity HIGH,CRITICAL \
+                        --format json \
+                        --output trivy-scan-report.json \
+                        --exit-code 1 \
+                        --quiet \
+                        engabdullah1909/solar-system:$GIT_COMMIT
+                '''
+                
+            }
+            post {
+                always {
+                    archiveArtifacts artifacts: 'trivy-scan-report.json', fingerprint: true
+                }
+            }
+        }
+
     }
 
     post {
