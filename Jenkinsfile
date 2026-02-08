@@ -92,18 +92,13 @@ pipeline {
                 sh '''
                     trivy image \
                         --severity HIGH,CRITICAL \
-                        --format json \
-                        --output trivy-scan-report.json \
-                        --exit-code 1 \
-                        --quiet \
+                        --format template \
+                        --template "@/usr/share/trivy/templates/html.tpl" \
+                        --output trivy-report.html \
                         engabdullah1909/solar-system:$GIT_COMMIT
                 '''
+
                 
-            }
-            post {
-                always {
-                    archiveArtifacts artifacts: 'trivy-scan-report.json', fingerprint: true
-                }
             }
         }
 
@@ -112,7 +107,9 @@ pipeline {
     post {
         always {
             junit allowEmptyResults: true, stdioRetention: '', testResults: 'test-results.xml'
+
             publishHTML([allowMissing: true, alwaysLinkToLastBuild: true, keepAll: true, reportDir: 'coverage/lcov-report', reportFiles: 'index.html', reportName: 'Code Coverage HTML Report', reportTitles: '', useWrapperFileDirectly: true])
+            publishHTML([allowMissing: true, alwaysLinkToLastBuild: true, keepAll: true, reportDir: './', reportFiles: 'trivy-report.html', reportName: 'Trivy Scan Report', reportTitles: '', useWrapperFileDirectly: true])
 
         }
     }
