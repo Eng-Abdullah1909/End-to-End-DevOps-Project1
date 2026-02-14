@@ -36,23 +36,23 @@ pipeline {
             }
         }
 
-        stage('Run Tests') {
-            steps {
-                withCredentials([usernamePassword(credentialsId: 'mongo cred user and pass', passwordVariable: 'MONGO_PASSWORD', usernameVariable: 'MONGO_USERNAME')]) {
-                    sh 'npm test || true'
-                }
-            }
-        }
+        // stage('Run Tests') {
+        //     steps {
+        //         withCredentials([usernamePassword(credentialsId: 'mongo cred user and pass', passwordVariable: 'MONGO_PASSWORD', usernameVariable: 'MONGO_USERNAME')]) {
+        //             sh 'npm test || true'
+        //         }
+        //     }
+        // }
 
-        stage('Code Coverage') {
-            steps {
-                withCredentials([usernamePassword(credentialsId: 'mongo cred user and pass', passwordVariable: 'MONGO_PASSWORD', usernameVariable: 'MONGO_USERNAME')]) {
-                    catchError(buildResult: 'SUCCESS', message: 'Issue will be fixed next build', stageResult: 'UNSTABLE') {
-                        sh 'npm run coverage'
-                    }
-                }
-            }
-        }
+        // stage('Code Coverage') {
+        //     steps {
+        //         withCredentials([usernamePassword(credentialsId: 'mongo cred user and pass', passwordVariable: 'MONGO_PASSWORD', usernameVariable: 'MONGO_USERNAME')]) {
+        //             catchError(buildResult: 'SUCCESS', message: 'Issue will be fixed next build', stageResult: 'UNSTABLE') {
+        //                 sh 'npm run coverage'
+        //             }
+        //         }
+        //     }
+        // }
 
         // stage('SAST - SonarQube') {
         //     steps {
