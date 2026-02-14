@@ -135,8 +135,8 @@ pipeline {
         stage('Commit & Push') {
             steps {
                 dir("k8s-objects-argocd") {
-                    sh 'git config --global user.email "abdullahusama733@gmail.com"'
-                    sh 'git config --global user.name "Abdullah-Usama"'
+                    sh 'git config --global user.email "abdullahusama7333@gmail.com"'
+                    sh 'git config --global user.name "Eng-Abdullah1909"'
                     sh 'git checkout main'
                     sh 'git add -A'
                     sh 'git commit -am "Updated image version for Build - ${VERSION}" || echo "No changes to commit"'
