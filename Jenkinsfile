@@ -133,14 +133,25 @@ pipeline {
         }
 
         stage('Commit & Push') {
+            when {
+                branch 'main'
+            }
             steps {
                 dir("k8s-objects-argocd") {
+
                     sh 'git config --global user.email "abdullahusama7333@gmail.com"'
                     sh 'git config --global user.name "Eng-Abdullah1909"'
                     sh 'git checkout main'
+
+
                     sh 'git add -A'
                     sh 'git commit -am "Updated image version for Build - ${VERSION}" || echo "No changes to commit"'
-                    sh 'git push origin main'
+
+
+                    withCredentials([string(credentialsId: 'Git-hub-token', variable: 'GITHUB_TOKEN')]) {
+                        sh 'git remote set-url origin https://Eng-Abdullah1909:${GITHUB_TOKEN}@github.com/Eng-Abdullah1909/k8s-objects-argocd.git'
+                        sh 'git push origin main'
+                    }
                 }
             }
         }
