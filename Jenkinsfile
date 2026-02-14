@@ -133,9 +133,6 @@ pipeline {
         }
 
         stage('Commit & Push') {
-            when {
-                branch 'main'
-            }
             steps {
                 dir("k8s-objects-argocd") {
 
