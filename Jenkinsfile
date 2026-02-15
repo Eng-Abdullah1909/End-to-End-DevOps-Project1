@@ -3,6 +3,8 @@ pipeline {
 
     options {
         timeout(time: 1, unit: 'HOURS')
+        disableConcurrentBuilds abortPrevious: true
+        buildDiscarder(logRotator(numToKeepStr: '10'))
     }
 
     tools {
@@ -10,10 +12,11 @@ pipeline {
     }
 
     environment {
-        MONGO_URI = "mongodb+srv://supercluster.d83jj.mongodb.net/superData"
+        MONGO_URI = credentials('Mongo-DB-URI')
+        MONGO_USERNAME = credentials('Mongo-DB-User')
+        MONGO_PASSWORD = credentials('Mongo-DB-Pass')
         Sonar_Scanner_Home = tool 'sonarqube-scanner-6.1.0'
         IMAGE_REPO = "engabdullah1909/solar-system"
-        NAME = "solar-system"
         VERSION = "${env.GIT_COMMIT}"
     }
 
@@ -36,23 +39,20 @@ pipeline {
             }
         }
 
-        // stage('Run Tests') {
-        //     steps {
-        //         withCredentials([usernamePassword(credentialsId: 'mongo cred user and pass', passwordVariable: 'MONGO_PASSWORD', usernameVariable: 'MONGO_USERNAME')]) {
-        //             sh 'npm test || true'
-        //         }
-        //     }
-        // }
+        stage('Run Tests') {
+            steps {
+                sh 'npm test || true'
+                
+            }
+        }
 
-        // stage('Code Coverage') {
-        //     steps {
-        //         withCredentials([usernamePassword(credentialsId: 'mongo cred user and pass', passwordVariable: 'MONGO_PASSWORD', usernameVariable: 'MONGO_USERNAME')]) {
-        //             catchError(buildResult: 'SUCCESS', message: 'Issue will be fixed next build', stageResult: 'UNSTABLE') {
-        //                 sh 'npm run coverage'
-        //             }
-        //         }
-        //     }
-        // }
+        stage('Code Coverage') {
+            steps {
+                catchError(buildResult: 'SUCCESS', message: 'Issue will be fixed next build', stageResult: 'UNSTABLE') {
+                    sh 'npm run coverage'
+                }
+            }
+        }
 
         // stage('SAST - SonarQube') {
         //     steps {
